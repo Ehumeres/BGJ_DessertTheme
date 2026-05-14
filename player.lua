@@ -12,7 +12,7 @@ function Player:new(x, y)
     self.gravity = 500
     self.grounded = false
     self.jumpBuffer = 0
-    self.jumpBufferTime = 0.1
+    self.jumpBufferTime = 0.11
     world:add(self, self.x, self.y, self.width, self.height)
 end
 

@@ -5,6 +5,8 @@ bump = require "libs.bump"
 -- this lets you resize window
 local push = require "libs.push"
 
+Camera = require 'libs.Camera'
+
 -- this is the virutal width and height I chose 320x180 since you can multiply by intger values to get 1080p and 4k
 VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 320, 180
 
@@ -25,6 +27,9 @@ function love.load()
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 640, 360, { fullscreen = false, vsync = true, resizable = true })
     local Player = require "player"
     player = Player(160, 90)
+    camera = Camera()
+    camera:setFollowLerp(0.2)
+    camera:setFollowStyle('PLATFORMER')
 end
 
 function love.keypressed(key)
@@ -37,13 +42,18 @@ function love.resize(w, h)
 end
 
 function love.update(dt)
+    camera:update(dt)
+    camera:follow(player.x + (VIRTUAL_WIDTH/2) - (player.width / 2), player.y + (VIRTUAL_HEIGHT/2) - (player.height/2))
     player:update(dt)
 end
 
 --push start and finish is for drawing everything youd want to get resized which would be everything so put everything in push start and finish
 function love.draw()
     push:start()
+    camera:attach()
+
     player:draw()
     love.graphics.rectangle("fill", platform.x, platform.y, platform.width, platform.height)
+    camera:detach()
     push:finish()
 end
