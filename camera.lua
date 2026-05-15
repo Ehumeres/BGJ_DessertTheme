@@ -2,15 +2,15 @@ local Object = require "libs.classic"
 
 local Camera = Object:extend()
 
-function Camera:new(virtual_width , virtual_height)
+function Camera:new(virtual_width, virtual_height)
     self.x = 0
     self.y = 0
 
-    self.virtual_width = virtual_width 
+    self.virtual_width = virtual_width
     self.virtual_height = virtual_height
 
     self.deadzoneX = 12
-    self.deadzoneY = 30
+    self.deadzoneY = 40
 
     self.shakeIntensity = 0
     self.shakeTime = 0
@@ -23,7 +23,6 @@ function Camera:shake(intensity, duration)
     self.shakeIntensity = intensity
     self.shakeTime = duration
 end
-
 
 function Camera:update(targetX, targetY, dt)
     --this the following player part
@@ -53,6 +52,7 @@ function Camera:update(targetX, targetY, dt)
         self.shakeY = 0
     end
 end
+
 --everything you want to listen to camera youd put inbetween apply and clear
 function Camera:apply()
     love.graphics.push()

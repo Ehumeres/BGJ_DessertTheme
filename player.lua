@@ -6,16 +6,19 @@ function Player:new(x, y)
     self.y = y
     self.vx = 0
     self.vy = 0
-    self.speed = 150
+    self.speed = 250
     self.width = 32
     self.height = 32
     self.gravity = 800
+    self.fallMultiplier = 2
+    self.lowJumpMultiplier = 1.4
     self.grounded = false
     self.jumpBuffer = 0
     self.jumpBufferTime = 0.11
     world:add(self, self.x, self.y, self.width, self.height)
 end
---sets jumpBuffer greater than zero 
+
+--sets jumpBuffer greater than zero
 function Player:keypressed(key)
     if key == "w" or key == "up" then
         self.jumpBuffer = self.jumpBufferTime
@@ -23,7 +26,17 @@ function Player:keypressed(key)
 end
 
 function Player:update(dt)
-    self.vy = self.vy + self.gravity * dt
+    local gravity = self.gravity
+    -- makes it you fall faster than you jump better for game feel
+    if self.vy > 0 then
+        gravity = self.gravity * self.fallMultiplier
+    end
+
+    if self.vy < 0 and not love.keyboard.isDown("w", "up") then
+        gravity = self.gravity * self.lowJumpMultiplier
+    end
+
+    self.vy = self.vy + gravity * dt
     self.jumpBuffer = math.max(0, self.jumpBuffer - dt)
 
     self.vx = 0
@@ -45,13 +58,14 @@ function Player:update(dt)
 
     self.grounded = false
     for i, col in ipairs(cols) do
-        --this checks if your feet are touching ground everything hear only occurs if you are touching ground 
+        --this checks if your feet are touching ground everything hear only occurs if you are touching ground
         if col.normal.y < 0 then
             self.grounded = true
             self.vy = 0
-            --if jumpBuffer greater than zero then perform jump 
+            --if jumpBuffer greater than zero then perform jump
             if self.jumpBuffer > 0 then
-                self.vy = -300
+                -- how high you want the player to jump
+                self.vy = -320
                 self.grounded = false
                 self.jumpBuffer = 0
             end
