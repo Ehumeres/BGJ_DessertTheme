@@ -7,8 +7,8 @@ local push = require "libs.push"
 
 Camera = require "camera"
 
--- this is the virutal width and height I chose 320x180 since you can multiply by intger values to get 1080p and 4k
-VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 426, 240
+-- this sets the virtual resolution the game renders at 640x360 and then scales to fit the window size
+VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 640, 360
 
 --creates a world for checking collision you have to put everything you want to have collisions with in the world
 world = bump.newWorld()
@@ -16,15 +16,15 @@ world = bump.newWorld()
 local player = {}
 
 --this is temporary platform when we are making levels will use something like tiled so everyone on the team can make levels its also easier to make levels visually than with code unless you do procedural gen thats pretty fun to code but its diffcult
-platform = { x = 0, y = 170, width = 320, height = 20 }
+platform = { x = 0, y = 170, width = 640, height = 40 }
 
 world:add(platform, platform.x, platform.y, platform.width, platform.height)
 
 function love.load()
     -- this is for making sure the game isnt blurry this uses nearest neighbour filitering which is best for pixel art games
     love.graphics.setDefaultFilter("nearest", "nearest")
-    -- this is just for setting up the screen resolution like the game is in 320x180 but when the screen is made its 640x360 although it can be scaled to anything else probably when we publish it we will just make it fullscreen but now its easier to test with and stuff on a lower resolution
-    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 852, 480, { fullscreen = false, vsync = true, resizable = true })
+    -- this sets up the game window the game renders at the virtual resolution and scales to fit the window size while still being easier to test in windowed mode
+    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 640, 360, { fullscreen = false, vsync = true, resizable = true })
     local Player = require "player"
     player = Player(160, 90)
     camera = Camera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT)

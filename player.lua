@@ -7,8 +7,8 @@ function Player:new(x, y)
     self.vx = 0
     self.vy = 0
     self.speed = 150
-    self.width = 16
-    self.height = 16
+    self.width = 32
+    self.height = 32
     self.gravity = 800
     self.grounded = false
     self.jumpBuffer = 0
