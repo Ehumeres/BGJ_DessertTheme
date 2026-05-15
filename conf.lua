@@ -1,6 +1,6 @@
 function love.conf(t)
-    t.window.width = 640
-    t.window.height = 360
-    t.window.title = "Meltdown"
+    t.window.width = 426
+    t.window.height = 240
+    t.window.title = "Crumbs of Vengeance"
     t.window.resizable = true
 end
