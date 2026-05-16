@@ -2,13 +2,8 @@
 Object = require "libs.classic"
 --- since love2d doesnt have collision checks this adds that to love2d in a way
 bump = require "libs.bump"
--- this lets you resize window
-local push = require "libs.push"
 
 Camera = require 'libs.Camera'
-
--- this is the virutal width and height I chose 320x180 since you can multiply by intger values to get 1080p and 4k
-VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 320, 180
 
 --creates a world for checking collision you have to put everything you want to have collisions with in the world
 world = bump.newWorld()
@@ -23,8 +18,6 @@ world:add(platform, platform.x, platform.y, platform.width, platform.height)
 function love.load()
     -- this is for making sure the game isnt blurry this uses nearest neighbour filitering which is best for pixel art games
     love.graphics.setDefaultFilter("nearest", "nearest")
-    -- this is just for setting up the screen resolution like the game is in 320x180 but when the screen is made its 640x360 although it can be scaled to anything else probably when we publish it we will just make it fullscreen but now its easier to test with and stuff on a lower resolution
-    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, 640, 360, { fullscreen = false, vsync = true, resizable = true })
     local Player = require "player"
     player = Player(160, 90)
     camera = Camera()
@@ -36,24 +29,17 @@ function love.keypressed(key)
     player:keypressed(key)
 end
 
--- gets whatever value the user resizes the window into and then give it to push so push can resize it
-function love.resize(w, h)
-    push:resize(w, h)
-end
-
 function love.update(dt)
     camera:update(dt)
-    camera:follow(player.x + (VIRTUAL_WIDTH/2) - (player.width / 2), player.y + (VIRTUAL_HEIGHT/2) - (player.height/2))
+    camera:follow(player.x, player.y)
     player:update(dt)
 end
 
 --push start and finish is for drawing everything youd want to get resized which would be everything so put everything in push start and finish
 function love.draw()
-    push:start()
     camera:attach()
 
     player:draw()
     love.graphics.rectangle("fill", platform.x, platform.y, platform.width, platform.height)
     camera:detach()
-    push:finish()
 end
