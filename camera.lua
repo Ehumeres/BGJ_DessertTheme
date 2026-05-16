@@ -9,7 +9,7 @@ function Camera:new(virtual_width, virtual_height)
     self.virtual_width = virtual_width
     self.virtual_height = virtual_height
 
-    self.deadzoneX = 12
+    self.deadzoneX = 17
     self.deadzoneY = 40
 
     self.shakeIntensity = 0
